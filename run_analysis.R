@@ -2,7 +2,7 @@
 featureList <- read.table('./UCI HAR Dataset/features.txt')
 
 # create a logical vector to filter relevant data
-relevantFeatures <- grepl("^.+[-](mean|std)[(].*$", features$V2)
+relevantFeatures <- grepl("^.+[-](mean|std)[(].*$", featureList$V2)
 variablesNames <- featureList$V2[relevantFeatures]
 activityLabels <- read.table('./UCI HAR Dataset/activity_labels.txt', col.names=c('id','activity'))
 
@@ -44,4 +44,4 @@ test$activity <- factor(activities$activity, labels=activityLabels$activity)
 # merge train and test sets
 tidy1 <- rbind(train,test)
 
-
+tidy2 <- aggregate(tidy1[as.character(variablesNames)], by=tidy1[c('set','activity','subject')], FUN=mean)
